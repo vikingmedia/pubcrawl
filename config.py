@@ -33,3 +33,10 @@ ch.setLevel(logging.INFO)
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
+
+################################################################################
+# EMAIL
+################################################################################
+
+EMAIL_SENDER = 'immobilien@stadtklan.org'
+EMAIL_RECEIVER = 'immobilien@stadtklan.org'

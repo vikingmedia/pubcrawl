@@ -60,9 +60,9 @@ class Item(object):
 class FlohmarktItem(Item):
     
     _fields = {
-        'id': {'type': int},
+        'id': {'type': unicode},
         'title': {'type': unicode},
         'timestamp': {'type': datetime.datetime},
         'url': {'type': unicode},
-        'text': {'type': unicode},
+        'text': {'type': unicode, 'hash': True},
     }

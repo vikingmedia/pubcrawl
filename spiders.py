@@ -59,7 +59,7 @@ class Flohmarkt(Spider):
         '''
         item = items.FlohmarktItem()
         
-        item['id'] = int(soup.find('input', {'name': 'inserat_id'})['value'])
+        item['id'] = soup.find('input', {'name': 'inserat_id'})['value']
         item['title'] = soup.find('title').text
         item['timestamp'] = parse_date(str(soup.find('div', text=re.compile('\(zuletzt aktualisiert\)'))).replace('(zuletzt aktualisiert)', ''))
         item['text'] = unicode(soup.find('div', style=None, id=None))
