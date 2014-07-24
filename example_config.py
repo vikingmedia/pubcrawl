@@ -22,7 +22,7 @@ logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 # Log to File
-fh = logging.FileHandler('/var/log/pubcrawl.log')
+fh = logging.FileHandler('pubcrawl.log')
 fh.setLevel(logging.WARNING)
 fh.setFormatter(formatter)
 logger.addHandler(fh)
@@ -36,12 +36,14 @@ logger.addHandler(ch)
 
 ################################################################################
 # EMAIL
+#
+# if email parameters are not defined, sending of email will be omitted!
 ################################################################################
 
 EMAIL_SENDER = 'immobilien@stadtklan.org'
-EMAIL_RECEIVER = 'erik@stadtklan.org'
-EMAIL_HOST = 'smtp.gmail.com:587'
-EMAIL_USER = 'livingroom@stadtklan.org'
-EMAIL_PWD  = 'hail2theclan!'
-EMAIL_USE_TLS = True
+EMAIL_RECEIVER = 'immobilien@stadtklan.org'
+EMAIL_HOST = 'localhost'
+EMAIL_USER = 'user'
+EMAIL_PWD  = 'password'
+EMAIL_USE_TLS = False
 EMAIL_SUBJECT = 'stadtklan crawler: %(spider)s [%(items)s] new items!'

@@ -38,9 +38,10 @@ class Flohmarkt(Spider):
         if not url: url = self.start_url
         
         soup = self.urlopen(url)
-        
+                
         for add in soup.findAll('div', {'class': 'pMitte'}):
             detail_link = add.find('a', href=re.compile('detail\/[0-9]+$'))
+            
             if not detail_link: continue
             item = self.parse_detail(self.urlopen(detail_link['href']))
             item['url'] = detail_link['href']
@@ -57,6 +58,16 @@ class Flohmarkt(Spider):
         '''
         parse detail view
         '''
+        #remove tags
+        for tag in soup.findAll('script'):
+            tag.replaceWith('')
+            
+        for tag in soup.findAll('iframe'):
+            tag.replaceWith('')
+            
+        for tag in soup.findAll('div', id='adunit'):
+            tag.replaceWith('')
+        
         item = items.FlohmarktItem()
         
         item['id'] = soup.find('input', {'name': 'inserat_id'})['value']

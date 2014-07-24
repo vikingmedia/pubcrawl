@@ -7,20 +7,68 @@ Created on Jul 22, 2014
 '''
 import datetime
 import pprint
+from copy import deepcopy
+
+################################################################################
+# ITEM BASE CLASS
+# Define your own item classes below
+################################################################################ 
+
 
 class Item(object):
     '''
-    Item
+    Item base class. Extend this class to build your own item types
+    
+    Define the fields you want to use
+    items need to have an 'id' field, which serves as a unique identifier in the database
+    the field names 'created', 'updated' and 'hash' may not be used, because these names
+    are used internally 
+    
+    field types may be
+    
+        * int
+        * long
+        * float
+        * str
+        * unicode
+        * buffer
+        * datetime.datetime
+        * datetime.date
+        
+    Fields are defines as dictionary
+    keys are the field names, values are dictionaries defining a "type"
+    
+        fields = {
+            'id': {'type': int},
+        }
+        
+    fields may also have 'hash' set to True, resulting in the field's contents being part of the 
+    items hash:
+    
+        fields = {
+            'id': {'type': int, 'hash': True},
+        }
+      
+     
     '''
     
-    _fields = {
-        'id': {'type': str, 'serializer': lambda x: str(x)},
+    # field definitions
+    fields = {
+        'id': {'type': int},
     }
     
-
     def __init__(self):
-        pass
+        '''
+        the constructor deepcopies the fields for use in the actual instances
+        '''
+        #deepcopy fields for each instance
+        self._fields = {}
+        for k,v in self.fields.iteritems(): self._fields[k] = deepcopy(v)
 
+    ########################
+    # DICTIONARY INTERFACE #
+    ########################
+    
     def __str__(self):
         d = dict([(k,v['value'] if v.has_key('value') else None) for k,v in self._fields.iteritems()])
         return pprint.pformat(d)
@@ -53,16 +101,18 @@ class Item(object):
         return self._fields.has_key(name)
     
     
+    
 ################################################################################
 # YOUR ITEM CLASSES HERE
+# EXTEND "Item" class and define your fields
 ################################################################################ 
 
 class FlohmarktItem(Item):
     
-    _fields = {
-        'id': {'type': unicode},
-        'title': {'type': unicode},
-        'timestamp': {'type': datetime.datetime},
-        'url': {'type': unicode},
-        'text': {'type': unicode, 'hash': True},
+    fields = {
+        'id':       {'type': unicode},
+        'title':    {'type': unicode},
+        'timestamp':{'type': datetime.datetime},
+        'url':      {'type': unicode},
+        'text':     {'type': unicode, 'hash': True},
     }
