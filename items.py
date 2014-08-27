@@ -57,13 +57,15 @@ class Item(object):
         'id': {'type': int},
     }
     
-    def __init__(self):
+    def __init__(self, **kwargs):
         '''
         the constructor deepcopies the fields for use in the actual instances
         '''
         #deepcopy fields for each instance
         self._fields = {}
-        for k,v in self.fields.iteritems(): self._fields[k] = deepcopy(v)
+        for k,v in self.fields.iteritems(): 
+            self._fields[k] = deepcopy(v)
+            if kwargs.has_key(k): self[k] = kwargs[k]
 
     ########################
     # DICTIONARY INTERFACE #
@@ -115,4 +117,18 @@ class FlohmarktItem(Item):
         'timestamp':{'type': datetime.datetime},
         'url':      {'type': unicode},
         'text':     {'type': unicode, 'hash': True},
+    }
+    
+# ----------------------------------------------------------------------------------------------------            
+
+class LeerstandItem(Item):
+    
+    fields = {
+        'id':       {'type': unicode},
+        'name':     {'type': unicode},
+        'link':     {'type': unicode},
+        'inactive': {'type': unicode, 'hash': True},
+        'address':  {'type': unicode},
+        'author':   {'type': unicode},
+        'comments': {'type': unicode, 'hash': True},       
     }

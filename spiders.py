@@ -20,7 +20,10 @@ class Spider (object):
     
     def urlopen(self, request):
         logging.info('GET %s', request)
-        return BeautifulSoup.BeautifulSoup(urllib2.urlopen(request).read())
+        return urllib2.urlopen(request).read()
+    
+    def order_soup(self, request):
+        return BeautifulSoup.BeautifulSoup(self.urlopen(request))
 
 
 
@@ -37,7 +40,7 @@ class Flohmarkt(Spider):
         
         if not url: url = self.start_url
         
-        soup = self.urlopen(url)
+        soup = self.order_soup(url)
                 
         for add in soup.findAll('div', {'class': 'pMitte'}):
             detail_link = add.find('a', href=re.compile('detail\/[0-9]+$'))
@@ -77,9 +80,22 @@ class Flohmarkt(Spider):
         
         return item
             
+# ----------------------------------------------------------------------------------------------------            
             
+import json
+import time
             
+class Leerstandsmelder(Spider):
+    
+    URL = 'http://www.leerstandsmelder.de/Wien/all_places.json?_=%(ts)s'  #ts == unix timestamp, can be ommitted
+    
+    def crawl(self):
         
+        for json_item in json.loads(self.urlopen(self.URL % {'ts': int(time.time())}))['places']:
+            item = items.LeerstandItem(**json_item['place'])
+            yield item
+                
+
         
         
     
