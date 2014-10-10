@@ -132,3 +132,14 @@ class LeerstandItem(Item):
         'author':   {'type': unicode},
         'comments': {'type': unicode, 'hash': True},       
     }
+    
+# ----------------------------------------------------------------------------------------------------            
+
+class EdiktItem(Item):
+    
+    fields = {
+        'id':       {'type': unicode},
+        'title':    {'type': unicode},
+        'url':      {'type': unicode},
+        'text':     {'type': unicode, 'hash': True},
+    }
